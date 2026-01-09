@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import LandingPage from '../views/LandingPage.vue'
 import SignIn from '../views/SignIn.vue'
 import SignUp from '../views/SignUp.vue'
 import EmailConfirmation from '../views/EmailConfirmation.vue'
@@ -10,6 +11,11 @@ import ImportBooks from '../views/ImportBooks.vue'
 const router = createRouter({
 	history: createWebHistory(import.meta.env.BASE_URL),
 	routes: [
+		{
+			name: 'Landing',
+			path: '/',
+			component: LandingPage,
+		},
 		{
 			name: 'Home',
 			path: '/app',

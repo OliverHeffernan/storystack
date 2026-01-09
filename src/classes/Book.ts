@@ -12,14 +12,14 @@ export interface BookInterface {
 }
 
 export default class Book {
-  private id: string | null;
-  private title: string;
-  private author: string;
-  private start_date: Date | null;
-  private end_date: Date | null
-  private image_url: string | null;
-  private status: string;
-  private pages: number;
+  public id: string | null;
+  public title: string;
+  public author: string;
+  public start_date: Date | null;
+  public end_date: Date | null
+  public image_url: string | null;
+  public status: string;
+  public pages: number;
 
   public constructor(book: BookInterface) {
     this.id = book.id;
@@ -89,7 +89,6 @@ export default class Book {
   public getStartDate(): Date | null { return this.start_date; }
   public getEndDate(): Date | null { return this.end_date; }
   public getImageUrl(): string | null {
-    console.log(this.image_url);
     return this.image_url;
   }
   public getPages(): number { return this.pages; }

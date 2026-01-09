@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import { ref, onMounted, Ref } from 'vue';
-import Option from '../interfaces/Option.ts';
+import { ref, onMounted, type Ref } from 'vue';
+import type Option from '../interfaces/Option.ts';
 const props = defineProps<{
 	options: Array<Option>;
 	colorSwap?: boolean;
+	useHtml?: boolean;
 }>();
 
 //const emit = defineEmits(props.options.map(option => option.value));
@@ -14,13 +15,11 @@ const emit = defineEmits<{
 const value = ref<string>('');
 
 onMounted(() => {
-	if (props.options.length > 0) {
+	if (props.options && props.options.length > 0 && props.options[0]) {
 		value.value = props.options[0].value;
 		//emit('select', value.value);
 	}
-
 });
-
 </script>
 <template>
 	<div class="container">
@@ -39,7 +38,8 @@ onMounted(() => {
 				}"
 				@click="value = option.value; $emit('select', option.value)"
 			>
-				{{ option.label }}
+				<span v-if="useHtml" v-html="option.label"></span>
+				<span v-else>{{ option.label }}</span>
 			</button>
 		</div>
 	</div>

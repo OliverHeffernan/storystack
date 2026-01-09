@@ -34,6 +34,10 @@ const importBooks = async () => {
 		return;
 	}
 	const file = fileInput.value.files[0];
+	if (!file) {
+		alert('No file selected.');
+		return;
+	}
 	const reader = new FileReader();
 	reader.readAsText(file);
 	const text = await new Promise<string>((resolve, reject) => {
