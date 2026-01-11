@@ -507,7 +507,7 @@ async function updateBook() {
 							<label for="editPages">Pages</label>
 							<input
 								id="editPages"
-								v-model.number="pagesRef"
+								v-model="pagesRef"
 								type="number"
 								placeholder="0"
 								min="0"

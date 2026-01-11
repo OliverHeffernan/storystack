@@ -12,26 +12,26 @@
 			<form @submit.prevent="addBook" class="book-form">
 				<div class="form-section">
 					<h3>Book Details</h3>
-					
+
 					<div class="form-row">
 						<div class="form-group">
 							<label for="title">Book Title *</label>
-							<input 
+							<input
 								id="title"
-								v-model="titleRef" 
-								type="text" 
+								v-model="titleRef"
+								type="text"
 								placeholder="Enter the book title"
 								required
 								:disabled="loading"
 							/>
 						</div>
-						
+
 						<div class="form-group">
 							<label for="author">Author *</label>
-							<input 
+							<input
 								id="author"
-								v-model="authorRef" 
-								type="text" 
+								v-model="authorRef"
+								type="text"
 								placeholder="Author's name"
 								required
 								:disabled="loading"
@@ -42,16 +42,16 @@
 					<div class="form-row">
 						<div class="form-group">
 							<label for="pages">Number of Pages</label>
-							<input 
+							<input
 								id="pages"
-								v-model.number="pagesRef" 
-								type="number" 
+								v-model="pagesRef"
+								type="number"
 								placeholder="0"
 								min="0"
 								:disabled="loading"
 							/>
 						</div>
-						
+
 						<div class="form-group">
 							<label for="status">Reading Status</label>
 							<select id="status" v-model="statusRef" :disabled="loading">
@@ -65,13 +65,13 @@
 
 				<div class="form-section">
 					<h3>Book Cover</h3>
-					
+
 					<div class="cover-section">
 						<div class="cover-preview">
-							<img 
-								v-if="imageUrlFromISBN()" 
-								:src="imageUrlFromISBN()" 
-								alt="Book Cover Preview" 
+							<img
+								v-if="imageUrlFromISBN()"
+								:src="imageUrlFromISBN()"
+								alt="Book Cover Preview"
 								class="cover-image"
 								@error="handleImageError"
 							/>
@@ -80,18 +80,18 @@
 								<span>No cover available</span>
 							</div>
 						</div>
-						
+
 						<div class="cover-controls">
 							<div class="checkbox-group">
-								<input 
-									id="useISBN" 
-									v-model="useISBNRef" 
+								<input
+									id="useISBN"
+									v-model="useISBNRef"
 									type="checkbox"
 									:disabled="loading"
 								/>
 								<label for="useISBN">Use ISBN to fetch cover automatically</label>
 							</div>
-							
+
 							<div class="form-group">
 								<label :for="useISBNRef ? 'isbn' : 'imageUrl'">
 									{{ useISBNRef ? 'ISBN Number' : 'Image URL' }}
@@ -110,13 +110,13 @@
 
 				<div class="form-section">
 					<h3>Reading Dates</h3>
-					
+
 					<div class="date-controls">
 						<div class="date-group">
 							<div class="checkbox-group">
-								<input 
-									id="includeStartDate" 
-									v-model="includeStartDateRef" 
+								<input
+									id="includeStartDate"
+									v-model="includeStartDateRef"
 									type="checkbox"
 									:disabled="loading"
 								/>
@@ -124,20 +124,20 @@
 							</div>
 							<div v-if="includeStartDateRef" class="form-group">
 								<label for="startDate">Start Date</label>
-								<input 
+								<input
 									id="startDate"
-									v-model="startDateRef" 
+									v-model="startDateRef"
 									type="date"
 									:disabled="loading"
 								/>
 							</div>
 						</div>
-						
+
 						<div class="date-group">
 							<div class="checkbox-group">
-								<input 
-									id="includeEndDate" 
-									v-model="includeEndDateRef" 
+								<input
+									id="includeEndDate"
+									v-model="includeEndDateRef"
 									type="checkbox"
 									:disabled="loading"
 								/>
@@ -145,9 +145,9 @@
 							</div>
 							<div v-if="includeEndDateRef" class="form-group">
 								<label for="endDate">End Date</label>
-								<input 
+								<input
 									id="endDate"
-									v-model="endDateRef" 
+									v-model="endDateRef"
 									type="date"
 									:disabled="loading"
 								/>
@@ -239,7 +239,7 @@ function clearForm() {
 
 async function addBook() {
 	if (!isFormValid.value || loading.value) return;
-	
+
 	loading.value = true;
 	err.value = null;
 	successMessage.value = '';
@@ -250,14 +250,14 @@ async function addBook() {
 		const image_url = imageUrlFromISBN();
 		const pages = pagesRef.value || 0;
 		const status = statusRef.value;
-		
+
 		let start_date: Date | null = null;
 		let end_date: Date | null = null;
-		
+
 		if (includeStartDateRef.value && startDateRef.value) {
 			start_date = new Date(startDateRef.value);
 		}
-		
+
 		if (includeEndDateRef.value && endDateRef.value) {
 			end_date = new Date(endDateRef.value);
 		}
@@ -275,7 +275,7 @@ async function addBook() {
 
 		const book: Book = new Book(newBook);
 		const error: PostgrestError | null = await book.save();
-		
+
 		if (error) {
 			err.value = error;
 			console.error('Error adding book:', error);
@@ -283,7 +283,7 @@ async function addBook() {
 		}
 
 		successMessage.value = 'Book added successfully!';
-		
+
 		// Clear form after successful addition
 		setTimeout(() => {
 			clearForm();
@@ -588,32 +588,32 @@ async function addBook() {
 		align-items: stretch;
 		text-align: center;
 	}
-	
+
 	.book-form-container {
 		padding: 24px 16px;
 	}
-	
+
 	.form-row {
 		grid-template-columns: 1fr;
 	}
-	
+
 	.cover-section {
 		grid-template-columns: 1fr;
 		gap: 16px;
 	}
-	
+
 	.cover-preview {
 		min-height: 200px;
 	}
-	
+
 	.date-controls {
 		grid-template-columns: 1fr;
 	}
-	
+
 	.form-actions {
 		flex-direction: column-reverse;
 	}
-	
+
 	.primary-button,
 	.secondary-button {
 		width: 100%;
@@ -624,11 +624,11 @@ async function addBook() {
 	.page-header h1 {
 		font-size: 1.75rem;
 	}
-	
+
 	.book-form-container {
 		padding: 16px;
 	}
-	
+
 	.form-section {
 		gap: 16px;
 	}
