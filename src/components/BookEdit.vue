@@ -140,18 +140,12 @@ async function updateBook() {
 	max-height: 90vh;
 	overflow-y: auto;
 	-webkit-overflow-scrolling: touch;
-	overscroll-behavior: contain;
 }
 
 @media (max-width: 768px) {
 	.edit-container {
 		max-height: none;
-		height: 100%;
-		display: flex;
-		flex-direction: column;
-		padding-bottom: 0;
-		overflow: hidden; /* Prevent overflow scroll chaining */
-		overscroll-behavior: contain;
+		height: auto;
 	}
 }
 
@@ -201,28 +195,10 @@ async function updateBook() {
 	gap: 24px;
 }
 
-@media (max-width: 768px) {
-	.edit-form {
-		flex: 1;
-		display: flex;
-		flex-direction: column;
-	}
-}
-
 .form-section {
 	display: flex;
 	flex-direction: column;
 	gap: 20px;
-}
-
-@media (max-width: 768px) {
-	.form-section {
-		flex: 1;
-		overflow-y: auto;
-		-webkit-overflow-scrolling: touch;
-		padding-bottom: 20px;
-		overscroll-behavior: contain;
-	}
 }
 
 .form-row {
@@ -459,15 +435,6 @@ async function updateBook() {
 
 /* Responsive Design */
 @media (max-width: 640px) {
-	.edit-container {
-		max-height: none;
-		height: 100%;
-		display: flex;
-		flex-direction: column;
-		padding-bottom: 0;
-		overflow: hidden; /* Prevent overflow scroll chaining */
-	}
-
 	.form-row {
 		grid-template-columns: 1fr;
 	}
@@ -484,15 +451,9 @@ async function updateBook() {
 	.form-actions {
 		flex-direction: column;
 		gap: 16px;
-		margin-top: auto;
 		padding: 16px 0 0 0;
 		border-top: 1px solid var(--sec);
 		background: white;
-		flex-shrink: 0;
-		/* Ensure buttons are always visible */
-		position: sticky;
-		bottom: 0;
-		z-index: 10;
 	}
 
 	.action-group {

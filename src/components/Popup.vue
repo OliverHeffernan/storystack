@@ -1,7 +1,9 @@
 <template>
 	<div class="popup-overlay" @click.self="$emit('close')">
-		<div class="popup-content margins">
-			<slot></slot>
+		<div class="popup-content">
+			<div class="popup-inner margins">
+				<slot></slot>
+			</div>
 		</div>
 	</div>
 </template>
@@ -17,14 +19,10 @@ defineEmits<{
 // Prevent body scroll when popup is open
 onMounted(() => {
 	document.body.style.overflow = 'hidden';
-	document.body.style.position = 'fixed';
-	document.body.style.width = '100%';
 });
 
 onUnmounted(() => {
 	document.body.style.overflow = '';
-	document.body.style.position = '';
-	document.body.style.width = '';
 });
 </script>
 <style scoped>
@@ -33,10 +31,14 @@ onUnmounted(() => {
 	padding: 20px;
 	border-radius: 8px;
 	max-width: 100vw;
-	max-height: 100vh;
+	max-height: 90vh;
 	overflow-y: auto;
-	-webkit-overflow-scrolling: touch;
 	overscroll-behavior: contain;
+	-webkit-overflow-scrolling: touch;
+}
+
+.popup-inner {
+	/* This will contain the margins class styling */
 }
 
 .popup-overlay {
@@ -49,35 +51,37 @@ onUnmounted(() => {
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	z-index: 1001; /* Higher than bottom nav */
+	z-index: 1001;
 	overflow-y: auto;
 	-webkit-overflow-scrolling: touch;
 	padding: 20px;
 	box-sizing: border-box;
-	overscroll-behavior: contain;
 }
 
 @media (max-width: 768px) {
 	.popup-overlay {
 		align-items: flex-start;
 		padding: 0;
-		background: white;
-		/* Account for bottom navigation height (80px) plus safe area */
-		padding-bottom: calc(80px + env(safe-area-inset-bottom, 0px));
+		background: rgba(0, 0, 0, 0.5);
+		overflow-y: auto;
+		-webkit-overflow-scrolling: touch;
 	}
-	
+
 	.popup-content {
-		width: 100%;
-		max-width: none;
+		z-index: 1005;
+		width: 100vw;
+		max-width: 100vw;
+		max-height: none;
+		height: 100vh;
 		margin: 0;
 		border-radius: 0;
-		height: 100vh;
-		max-height: calc(100vh - 80px - env(safe-area-inset-bottom, 0px));
-		padding: 20px;
-		display: flex;
-		flex-direction: column;
+		padding: 0;
 		overflow-y: auto;
-		overscroll-behavior: contain;
+		-webkit-overflow-scrolling: touch;
+	}
+
+	.popup-inner {
+		padding: 20px;
 	}
 }
 </style>
