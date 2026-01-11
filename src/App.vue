@@ -26,6 +26,30 @@ const showBottomNav = computed(() => {
 	margin: 0;
 	color: var(--text);
 	font-family: "Roboto", sans-serif;
+	box-sizing: border-box;
+}
+
+html, body {
+	overflow-x: hidden;
+	width: 100%;
+	position: relative;
+}
+
+body {
+	touch-action: manipulation;
+}
+
+/* Prevent horizontal scroll on all elements */
+* {
+	max-width: 100%;
+}
+
+/* Ensure form inputs don't cause horizontal scroll */
+input, textarea, select {
+	max-width: 100%;
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	appearance: none;
 }
 
 p {
@@ -42,11 +66,14 @@ p {
 
 .app-container {
 	min-height: 100vh;
+	overflow-x: hidden;
+	position: relative;
 }
 
 .main-content {
 	padding-bottom: 0;
 	min-height: 100vh;
+	overflow-x: hidden;
 }
 
 .main-content.with-bottom-nav {

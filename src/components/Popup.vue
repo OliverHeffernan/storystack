@@ -10,6 +10,10 @@
 	background: white;
 	padding: 20px;
 	border-radius: 8px;
+	max-width: 100vw;
+	max-height: 100vh;
+	overflow-y: auto;
+	-webkit-overflow-scrolling: touch;
 }
 
 .popup-overlay {
@@ -23,5 +27,23 @@
 	justify-content: center;
 	align-items: center;
 	z-index: 1000;
+	overflow-y: auto;
+	-webkit-overflow-scrolling: touch;
+	padding: 20px;
+	box-sizing: border-box;
+}
+
+@media (max-width: 768px) {
+	.popup-overlay {
+		align-items: flex-start;
+		padding: 10px;
+	}
+	
+	.popup-content {
+		width: 100%;
+		max-width: none;
+		margin: 0;
+		border-radius: 8px 8px 0 0;
+	}
 }
 </style>

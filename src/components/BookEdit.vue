@@ -139,6 +139,15 @@ async function updateBook() {
 	max-width: 600px;
 	max-height: 90vh;
 	overflow-y: auto;
+	-webkit-overflow-scrolling: touch;
+}
+
+@media (max-width: 768px) {
+	.edit-container {
+		max-height: none;
+		height: 100%;
+		padding-bottom: 20px;
+	}
 }
 
 .edit-header {
@@ -428,7 +437,9 @@ async function updateBook() {
 /* Responsive Design */
 @media (max-width: 640px) {
 	.edit-container {
-		max-height: 95vh;
+		max-height: none;
+		height: 100%;
+		padding-bottom: 20px;
 	}
 
 	.form-row {
@@ -447,6 +458,15 @@ async function updateBook() {
 	.form-actions {
 		flex-direction: column;
 		gap: 16px;
+		position: sticky;
+		bottom: 0;
+		background: white;
+		padding: 16px 0;
+		margin: 16px -20px 0 -20px;
+		padding-left: 20px;
+		padding-right: 20px;
+		border-top: 1px solid var(--sec);
+		z-index: 10;
 	}
 
 	.action-group {
