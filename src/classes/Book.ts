@@ -6,7 +6,7 @@ export interface BookInterface {
 	author: string;
 	start_date: Date | string | null;
 	end_date: Date | string | null;
-	creation_date: Date | null;
+	creation_date?: Date | null;
 	image_url: string | null;
 	status: string;
 	pages: number;
@@ -40,7 +40,7 @@ export default class Book {
 		this.author = book.author;
 		this.start_date = Book.parseDate(book.start_date);
 		this.end_date = Book.parseDate(book.end_date);
-		this.creation_date = Book.parseDate(book.creation_date);
+		this.creation_date = Book.parseDate(book.creation_date || null);
 		this.image_url = book.image_url;
 		this.status = book.status;
 		this.pages = book.pages;
