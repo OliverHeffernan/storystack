@@ -18,7 +18,7 @@ const emit = defineEmits<{
 const titleRef = ref('');
 const authorRef = ref('');
 const imgUrlRef = ref('');
-const pagesRef = ref<number>(0);
+const pagesRef = ref('0');
 const startDateRef = ref('');
 const endDateRef = ref('');
 const includeStartDateRef = ref(false);
@@ -36,7 +36,7 @@ onMounted(() => {
 	titleRef.value = props.book.getTitle();
 	authorRef.value = props.book.getAuthor();
 	imgUrlRef.value = props.book.getImageUrl() || '';
-	pagesRef.value = props.book.getPages();
+	pagesRef.value = props.book.getPages().toString();
 
 	const startDate: Date | null = props.book.getStartDate();
 	if (startDate !== null) {

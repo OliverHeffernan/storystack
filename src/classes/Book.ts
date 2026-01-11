@@ -9,7 +9,7 @@ export interface BookInterface {
 	creation_date?: Date | null;
 	image_url: string | null;
 	status: string;
-	pages: number;
+	pages: number | string;
 }
 
 export default class Book {
@@ -43,7 +43,11 @@ export default class Book {
 		this.creation_date = Book.parseDate(book.creation_date || null);
 		this.image_url = book.image_url;
 		this.status = book.status;
-		this.pages = book.pages;
+		if (typeof book.pages === 'string') {
+			this.pages = parseInt(book.pages, 10);
+		} else {
+			this.pages = book.pages;
+		}
 	}
 
 	public async delete(): Promise<PostgrestError | string | null> {
@@ -119,5 +123,11 @@ export default class Book {
 	public setEndDate(end_date: Date | null): void { this.end_date = end_date; }
 	public setImageUrl(image_url: string | null): void { this.image_url = image_url; }
 	public setStatus(status: string): void { this.status = status; }
-	public setPages(pages: number): void { this.pages = pages; }
+	public setPages(pages: number | string): void {
+		if (typeof pages === 'string') {
+			this.pages = parseInt(pages, 10);
+		} else {
+			this.pages = pages;
+		}
+	}
 }

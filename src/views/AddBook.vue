@@ -195,7 +195,7 @@ const titleRef = ref('');
 const authorRef = ref('');
 const useISBNRef = ref(false);
 const imgUrlRef = ref('');
-const pagesRef = ref<number>(0);
+const pagesRef = ref('0');
 const startDateRef = ref('');
 const endDateRef = ref('');
 const includeStartDateRef = ref(false);
@@ -227,7 +227,7 @@ function clearForm() {
 	authorRef.value = '';
 	useISBNRef.value = false;
 	imgUrlRef.value = '';
-	pagesRef.value = 0;
+	pagesRef.value = '0';
 	startDateRef.value = '';
 	endDateRef.value = '';
 	includeStartDateRef.value = false;
