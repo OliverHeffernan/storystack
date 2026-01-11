@@ -140,6 +140,7 @@ async function updateBook() {
 	max-height: 90vh;
 	overflow-y: auto;
 	-webkit-overflow-scrolling: touch;
+	overscroll-behavior: contain;
 }
 
 @media (max-width: 768px) {
@@ -149,6 +150,8 @@ async function updateBook() {
 		display: flex;
 		flex-direction: column;
 		padding-bottom: 0;
+		overflow: hidden; /* Prevent overflow scroll chaining */
+		overscroll-behavior: contain;
 	}
 }
 
@@ -218,6 +221,7 @@ async function updateBook() {
 		overflow-y: auto;
 		-webkit-overflow-scrolling: touch;
 		padding-bottom: 20px;
+		overscroll-behavior: contain;
 	}
 }
 
@@ -461,6 +465,7 @@ async function updateBook() {
 		display: flex;
 		flex-direction: column;
 		padding-bottom: 0;
+		overflow: hidden; /* Prevent overflow scroll chaining */
 	}
 
 	.form-row {
@@ -484,6 +489,10 @@ async function updateBook() {
 		border-top: 1px solid var(--sec);
 		background: white;
 		flex-shrink: 0;
+		/* Ensure buttons are always visible */
+		position: sticky;
+		bottom: 0;
+		z-index: 10;
 	}
 
 	.action-group {
@@ -502,7 +511,7 @@ async function updateBook() {
 }
 </style>
 <template>
-	<Popup>
+	<Popup @close="emit('close')">
 		<div class="edit-container">
 			<div class="edit-header">
 				<h2>Edit Book</h2>
