@@ -6,6 +6,7 @@ import Selector from '../components/Selector.vue';
 import BookContainer from '../components/BookContainer.vue';
 import type Option from '../interfaces/Option.ts';
 import Book from '../classes/Book.ts';
+import sortBooksByDate from '../utils/sortBooks.ts';
 
 const user = ref<User | null>(null);
 const books = ref<Book[]>([]);
@@ -127,16 +128,7 @@ const stats = computed(() => {
 
 // Sorted books for display (ordered by completion date, newest first)
 const sortedBooks = computed(() => {
-	return [...filteredBooks.value].sort((a, b) => {
-		const dateA = a.getEndDate();
-		const dateB = b.getEndDate();
-
-		if (!dateA && !dateB) return 0;
-		if (!dateA) return 1;
-		if (!dateB) return -1;
-
-		return dateB.getTime() - dateA.getTime();
-	});
+	return [...filteredBooks.value].sort(sortBooksByDate);
 });
 
 // Period display

@@ -37,19 +37,19 @@ onMounted(() => {
 	authorRef.value = props.book.getAuthor();
 	imgUrlRef.value = props.book.getImageUrl() || '';
 	pagesRef.value = props.book.getPages();
-	
+
 	const startDate: Date | null = props.book.getStartDate();
 	if (startDate !== null) {
 		includeStartDateRef.value = true;
 		startDateRef.value = startDate.toISOString().substring(0, 10);
 	}
-	
+
 	const endDate: Date | null = props.book.getEndDate();
 	if (endDate) {
 		includeEndDateRef.value = true;
 		endDateRef.value = endDate.toISOString().substring(0, 10);
 	}
-	
+
 	statusRef.value = props.book.getStatus();
 });
 
@@ -66,10 +66,10 @@ async function removeBook() {
 	if (!confirm('Are you sure you want to delete this book? This action cannot be undone.')) {
 		return;
 	}
-	
+
 	loading.value = true;
 	errorMessage.value = '';
-	
+
 	try {
 		const error: PostgrestError | string | null = await props.book.delete();
 		if (error) {
@@ -87,43 +87,43 @@ async function removeBook() {
 
 async function updateBook() {
 	if (!isFormValid.value || loading.value) return;
-	
+
 	loading.value = true;
 	errorMessage.value = '';
 	successMessage.value = '';
-	
+
 	try {
 		const updatedBook: Book = props.book;
 		updatedBook.setTitle(titleRef.value.trim());
 		updatedBook.setAuthor(authorRef.value.trim());
 		updatedBook.setImageUrl(imgUrlRef.value);
-		updatedBook.setPages(pagesRef.value || 0);
-		
+		updatedBook.setPages(pagesRef.value);
+
 		if (includeStartDateRef.value && startDateRef.value) {
 			updatedBook.setStartDate(newDate(startDateRef.value));
 		} else {
 			updatedBook.setStartDate(null);
 		}
-		
+
 		if (includeEndDateRef.value && endDateRef.value) {
 			updatedBook.setEndDate(newDate(endDateRef.value));
 		} else {
 			updatedBook.setEndDate(null);
 		}
-		
+
 		updatedBook.setStatus(statusRef.value);
-		
+
 		const error = await updatedBook.save();
 		if (error) {
 			errorMessage.value = error.message;
 			return;
 		}
-		
+
 		successMessage.value = 'Book updated successfully!';
 		setTimeout(() => {
 			emit('update', updatedBook);
 		}, 1000);
-		
+
 	} catch (error) {
 		errorMessage.value = 'Failed to update book';
 		console.error('Error updating book:', error);
@@ -430,35 +430,35 @@ async function updateBook() {
 	.edit-container {
 		max-height: 95vh;
 	}
-	
+
 	.form-row {
 		grid-template-columns: 1fr;
 	}
-	
+
 	.cover-section {
 		grid-template-columns: 1fr;
 		text-align: center;
 	}
-	
+
 	.date-controls {
 		grid-template-columns: 1fr;
 	}
-	
+
 	.form-actions {
 		flex-direction: column;
 		gap: 16px;
 	}
-	
+
 	.action-group {
 		width: 100%;
 		flex-direction: column-reverse;
 	}
-	
+
 	.primary-button,
 	.secondary-button {
 		width: 100%;
 	}
-	
+
 	.delete-button {
 		width: 100%;
 	}
@@ -479,22 +479,22 @@ async function updateBook() {
 					<div class="form-row">
 						<div class="form-group">
 							<label for="editTitle">Book Title *</label>
-							<input 
+							<input
 								id="editTitle"
-								v-model="titleRef" 
-								type="text" 
+								v-model="titleRef"
+								type="text"
 								placeholder="Enter book title"
 								required
 								:disabled="loading"
 							/>
 						</div>
-						
+
 						<div class="form-group">
 							<label for="editAuthor">Author *</label>
-							<input 
+							<input
 								id="editAuthor"
-								v-model="authorRef" 
-								type="text" 
+								v-model="authorRef"
+								type="text"
 								placeholder="Author name"
 								required
 								:disabled="loading"
@@ -505,16 +505,16 @@ async function updateBook() {
 					<div class="form-row">
 						<div class="form-group">
 							<label for="editPages">Pages</label>
-							<input 
+							<input
 								id="editPages"
-								v-model.number="pagesRef" 
-								type="number" 
+								v-model.number="pagesRef"
+								type="number"
 								placeholder="0"
 								min="0"
 								:disabled="loading"
 							/>
 						</div>
-						
+
 						<div class="form-group">
 							<label for="editStatus">Status</label>
 							<select id="editStatus" v-model="statusRef" :disabled="loading">
@@ -527,10 +527,10 @@ async function updateBook() {
 
 					<div class="cover-section">
 						<div class="cover-preview">
-							<img 
-								v-if="imgUrlRef" 
-								:src="imgUrlRef" 
-								alt="Book Cover" 
+							<img
+								v-if="imgUrlRef"
+								:src="imgUrlRef"
+								alt="Book Cover"
 								class="cover-image"
 							/>
 							<div v-else class="cover-placeholder">
@@ -538,13 +538,13 @@ async function updateBook() {
 								<span>No cover</span>
 							</div>
 						</div>
-						
+
 						<div class="form-group">
 							<label for="editImageUrl">Cover Image URL</label>
-							<input 
+							<input
 								id="editImageUrl"
-								v-model="imgUrlRef" 
-								type="text" 
+								v-model="imgUrlRef"
+								type="text"
 								placeholder="https://example.com/cover.jpg"
 								:disabled="loading"
 							/>
@@ -553,40 +553,40 @@ async function updateBook() {
 
 					<div class="date-section">
 						<h4>Reading Dates</h4>
-						
+
 						<div class="date-controls">
 							<div class="date-group">
 								<div class="checkbox-group">
-									<input 
-										id="editIncludeStartDate" 
-										v-model="includeStartDateRef" 
+									<input
+										id="editIncludeStartDate"
+										v-model="includeStartDateRef"
 										type="checkbox"
 										:disabled="loading"
 									/>
 									<label for="editIncludeStartDate">Set start date</label>
 								</div>
 								<div v-if="includeStartDateRef" class="form-group">
-									<input 
-										v-model="startDateRef" 
+									<input
+										v-model="startDateRef"
 										type="date"
 										:disabled="loading"
 									/>
 								</div>
 							</div>
-							
+
 							<div class="date-group">
 								<div class="checkbox-group">
-									<input 
-										id="editIncludeEndDate" 
-										v-model="includeEndDateRef" 
+									<input
+										id="editIncludeEndDate"
+										v-model="includeEndDateRef"
 										type="checkbox"
 										:disabled="loading"
 									/>
 									<label for="editIncludeEndDate">Set completion date</label>
 								</div>
 								<div v-if="includeEndDateRef" class="form-group">
-									<input 
-										v-model="endDateRef" 
+									<input
+										v-model="endDateRef"
 										type="date"
 										:disabled="loading"
 									/>
@@ -607,9 +607,9 @@ async function updateBook() {
 				</div>
 
 				<div class="form-actions">
-					<button 
-						type="button" 
-						@click="removeBook" 
+					<button
+						type="button"
+						@click="removeBook"
 						class="delete-button"
 						:disabled="loading"
 					>
@@ -617,19 +617,19 @@ async function updateBook() {
 						<i v-else class="fas fa-trash"></i>
 						Delete Book
 					</button>
-					
+
 					<div class="action-group">
-						<button 
-							type="button" 
-							@click="emit('close')" 
+						<button
+							type="button"
+							@click="emit('close')"
 							class="secondary-button"
 							:disabled="loading"
 						>
 							Cancel
 						</button>
-						
-						<button 
-							type="submit" 
+
+						<button
+							type="submit"
 							class="primary-button"
 							:disabled="loading || !isFormValid"
 						>

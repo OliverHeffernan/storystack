@@ -5,6 +5,8 @@ import Book from '../classes/Book';
 import BookContainer from '../components/BookContainer.vue';
 import Selector from '../components/Selector.vue';
 import type Option from '../interfaces/Option.ts';
+
+import sortBooksByDate from '../utils/sortBooks.ts';
 import { ref, type Ref } from 'vue';
 
 const books: Ref<Book[]> = ref([]);
@@ -21,10 +23,9 @@ supabase.from('books').select('*').then(({ data, error }) => {
 		console.error('Error fetching books:', error);
 	}
 	for (const item of data || []) {
-		item.start_date = item.start_date ? new Date(item.start_date) : null;
-		item.end_date = item.end_date ? new Date(item.end_date) : null;
 		books.value.push(new Book(item) as Book);
 	}
+	books.value.sort(sortBooksByDate);
 });
 </script>
 <template>
@@ -33,7 +34,7 @@ supabase.from('books').select('*').then(({ data, error }) => {
 			<h2>My Books</h2>
 			<RouterLink :to="{ name: 'Add Book' }" class="router-link">Add Book</RouterLink>
 		</div>
-		
+
 		<div class="controls">
 			<Selector
 				:options="[
@@ -44,28 +45,28 @@ supabase.from('books').select('*').then(({ data, error }) => {
 				] as Option[]"
 				@select="(value: string) => { filterStatus = value }"
 			/>
-			
+
 			<Selector
 				:options="viewOptions"
 				:use-html="true"
 				@select="(value: string) => { viewMode = value }"
 			/>
 		</div>
-		
+
 		<div v-if="viewMode === 'card'" class="books-grid">
-			<BookContainer 
-				v-for="book in books.filter((book: Book) => filterStatus == 'all' || book.getStatus() == filterStatus)" 
+			<BookContainer
+				v-for="book in books.filter((book: Book) => filterStatus == 'all' || book.getStatus() == filterStatus)"
 				:key="book.getUid() || ''"
-				:book="book" 
+				:book="book"
 				view-mode="card"
 			/>
 		</div>
-		
+
 		<div v-else class="books-list">
-			<BookContainer 
-				v-for="book in books.filter((book: Book) => filterStatus == 'all' || book.getStatus() == filterStatus)" 
+			<BookContainer
+				v-for="book in books.filter((book: Book) => filterStatus == 'all' || book.getStatus() == filterStatus)"
 				:key="book.getUid() || ''"
-				:book="book" 
+				:book="book"
 				view-mode="list"
 			/>
 		</div>
@@ -112,7 +113,7 @@ supabase.from('books').select('*').then(({ data, error }) => {
 		flex-direction: column;
 		align-items: stretch;
 	}
-	
+
 	.books-grid {
 		justify-content: center;
 	}
