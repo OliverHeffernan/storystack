@@ -146,7 +146,9 @@ async function updateBook() {
 	.edit-container {
 		max-height: none;
 		height: 100%;
-		padding-bottom: 20px;
+		display: flex;
+		flex-direction: column;
+		padding-bottom: 0;
 	}
 }
 
@@ -196,10 +198,27 @@ async function updateBook() {
 	gap: 24px;
 }
 
+@media (max-width: 768px) {
+	.edit-form {
+		flex: 1;
+		display: flex;
+		flex-direction: column;
+	}
+}
+
 .form-section {
 	display: flex;
 	flex-direction: column;
 	gap: 20px;
+}
+
+@media (max-width: 768px) {
+	.form-section {
+		flex: 1;
+		overflow-y: auto;
+		-webkit-overflow-scrolling: touch;
+		padding-bottom: 20px;
+	}
 }
 
 .form-row {
@@ -439,7 +458,9 @@ async function updateBook() {
 	.edit-container {
 		max-height: none;
 		height: 100%;
-		padding-bottom: 20px;
+		display: flex;
+		flex-direction: column;
+		padding-bottom: 0;
 	}
 
 	.form-row {
@@ -458,15 +479,11 @@ async function updateBook() {
 	.form-actions {
 		flex-direction: column;
 		gap: 16px;
-		position: sticky;
-		bottom: 0;
-		background: white;
-		padding: 16px 0;
-		margin: 16px -20px 0 -20px;
-		padding-left: 20px;
-		padding-right: 20px;
+		margin-top: auto;
+		padding: 16px 0 0 0;
 		border-top: 1px solid var(--sec);
-		z-index: 10;
+		background: white;
+		flex-shrink: 0;
 	}
 
 	.action-group {

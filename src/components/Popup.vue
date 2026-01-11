@@ -36,14 +36,20 @@
 @media (max-width: 768px) {
 	.popup-overlay {
 		align-items: flex-start;
-		padding: 10px;
+		padding: 0;
+		background: white;
 	}
 	
 	.popup-content {
 		width: 100%;
 		max-width: none;
 		margin: 0;
-		border-radius: 8px 8px 0 0;
+		border-radius: 0;
+		height: 100vh;
+		max-height: 100vh;
+		padding: 20px;
+		display: flex;
+		flex-direction: column;
 	}
 }
 </style>
