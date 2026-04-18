@@ -188,6 +188,7 @@ import Book from '../classes/Book.ts';
 import type { BookInterface } from '../classes/Book.ts';
 import type { PostgrestError } from '@supabase/supabase-js';
 import { supabase } from '../lib/supabase.ts';
+import { syncBookColourIfMissing } from '../utils/bookColourSync';
 
 const router = useRouter();
 
@@ -271,6 +272,7 @@ async function addBook() {
 			id: null,
 			pages,
 			status,
+			colour: null,
 		};
 
 		const book: Book = new Book(newBook);
@@ -281,6 +283,8 @@ async function addBook() {
 			console.error('Error adding book:', error);
 			return;
 		}
+
+		await syncBookColourIfMissing(book);
 
 		successMessage.value = 'Book added successfully!';
 

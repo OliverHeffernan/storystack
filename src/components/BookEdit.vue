@@ -96,8 +96,13 @@ async function updateBook() {
 		const updatedBook: Book = props.book;
 		updatedBook.setTitle(titleRef.value.trim());
 		updatedBook.setAuthor(authorRef.value.trim());
-		updatedBook.setImageUrl(imgUrlRef.value);
+		const previousImageUrl = updatedBook.getImageUrl() || '';
+		const nextImageUrl = imgUrlRef.value.trim();
+		updatedBook.setImageUrl(nextImageUrl);
 		updatedBook.setPages(pagesRef.value);
+		if (previousImageUrl !== nextImageUrl) {
+			updatedBook.setColour(null);
+		}
 
 		if (includeStartDateRef.value && startDateRef.value) {
 			updatedBook.setStartDate(newDate(startDateRef.value));

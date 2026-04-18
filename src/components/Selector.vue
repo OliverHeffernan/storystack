@@ -53,6 +53,7 @@ onMounted(() => {
 .selector {
 	display: flex;
 	width: fit-content;
+	max-width: 100%;
 	gap: 4px;
 	background-color: var(--sec);
 	padding: 5px;
@@ -69,6 +70,7 @@ onMounted(() => {
 	text-wrap: nowrap;
 	border: none;
 	font-size: 0.8rem;
+	flex: 0 0 auto;
 	background-color: var(--sec)
 }
 

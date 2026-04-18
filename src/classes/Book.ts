@@ -10,6 +10,7 @@ export interface BookInterface {
 	image_url: string | null;
 	status: string;
 	pages: number | string;
+	colour?: string | null;
 }
 
 export default class Book {
@@ -22,6 +23,7 @@ export default class Book {
 	public status: string;
 	public pages: number;
 	public creation_date: Date | null;
+	public colour: string | null;
 
 	public static parseDate(date: Date | string | null): Date | null {
 		if (date === null) {
@@ -43,6 +45,7 @@ export default class Book {
 		this.creation_date = Book.parseDate(book.creation_date || null);
 		this.image_url = book.image_url;
 		this.status = book.status;
+		this.colour = book.colour ?? null;
 		if (typeof book.pages === 'string') {
 			this.pages = parseInt(book.pages, 10);
 		} else {
@@ -67,7 +70,7 @@ export default class Book {
 	public async save(): Promise<PostgrestError | null> {
 		var errorA;
 		if (this.id === null) {
-			const { error } = await supabase.from('books').insert({
+			const { data, error } = await supabase.from('books').insert({
 				title: this.title,
 				author: this.author,
 				start_date: this.start_date,
@@ -75,7 +78,11 @@ export default class Book {
 				image_url: this.image_url,
 				status: this.status,
 				pages: this.pages,
-			});
+				colour: this.colour,
+			}).select('id').single();
+			if (data?.id) {
+				this.id = data.id;
+			}
 			errorA = error;
 		} else {
 			const { error } = await supabase.from('books').update({
@@ -87,6 +94,7 @@ export default class Book {
 				image_url: this.image_url,
 				status: this.status,
 				pages: this.pages,
+				colour: this.colour,
 			}).eq('id', this.id);
 			errorA = error;
 		}
@@ -114,6 +122,7 @@ export default class Book {
 	}
 	public getPages(): number { return this.pages; }
 	public getStatus(): string { return this.status; }
+	public getColour(): string | null { return this.colour; }
 
 	// basic setters
 
@@ -123,6 +132,7 @@ export default class Book {
 	public setEndDate(end_date: Date | null): void { this.end_date = end_date; }
 	public setImageUrl(image_url: string | null): void { this.image_url = image_url; }
 	public setStatus(status: string): void { this.status = status; }
+	public setColour(colour: string | null): void { this.colour = colour; }
 	public setPages(pages: number | string): void {
 		if (typeof pages === 'string') {
 			this.pages = parseInt(pages, 10);

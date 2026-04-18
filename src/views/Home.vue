@@ -7,6 +7,7 @@ import BookContainer from '../components/BookContainer.vue';
 import type Option from '../interfaces/Option.ts';
 import Book from '../classes/Book.ts';
 import sortBooksByDate from '../utils/sortBooks.ts';
+import { syncMissingBookColours } from '../utils/bookColourSync';
 
 const user = ref<User | null>(null);
 const books = ref<Book[]>([]);
@@ -18,6 +19,7 @@ const viewMode = ref('card');
 const viewOptions: Option[] = [
 	{ label: '<i class="fas fa-th-large"></i>', value: 'card' },
 	{ label: '<i class="fas fa-list"></i>', value: 'list' },
+	{ label: '<i class="fas fa-layer-group"></i> stack', value: 'stack' },
 ];
 
 // Timeframe options
@@ -41,6 +43,7 @@ onMounted(async () => {
 			item.end_date = item.end_date ? new Date(item.end_date) : null;
 			return new Book(item) as Book;
 		});
+		syncMissingBookColours(books.value);
 	}
 });
 
@@ -280,6 +283,15 @@ watch(timeframe, () => {
 				/>
 			</div>
 
+			<div v-else-if="viewMode === 'stack'" class="books-stack">
+				<BookContainer
+					v-for="book in sortedBooks"
+					:key="book.getUid() || ''"
+					:book="book"
+					view-mode="stack"
+				/>
+			</div>
+
 			<div v-else class="books-list">
 				<BookContainer
 					v-for="book in sortedBooks"
@@ -490,6 +502,13 @@ watch(timeframe, () => {
 .books-list {
 	display: flex;
 	flex-direction: column;
+}
+
+.books-stack {
+	display: flex;
+	flex-direction: column;
+	gap: 0;
+	padding: 10px 0;
 }
 
 @media (max-width: 768px) {

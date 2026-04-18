@@ -8,6 +8,7 @@ import type Option from '../interfaces/Option.ts';
 
 import sortBooksByDate from '../utils/sortBooks.ts';
 import { ref, type Ref } from 'vue';
+import { syncMissingBookColours } from '../utils/bookColourSync';
 
 const books: Ref<Book[]> = ref([]);
 const filterStatus: Ref<string> = ref<string>('all');
@@ -15,7 +16,8 @@ const viewMode: Ref<string> = ref<string>('list');
 
 const viewOptions: Option[] = [
 	{ label: '<i class="fas fa-list"></i>', value: 'list' },
-	{ label: '<i class="fas fa-th-large"></i>', value: 'card' }
+	{ label: '<i class="fas fa-th-large"></i>', value: 'card' },
+	{ label: '<i class="fas fa-layer-group"></i> stack', value: 'stack' }
 ];
 
 supabase.from('books').select('*').then(({ data, error }) => {
@@ -26,6 +28,7 @@ supabase.from('books').select('*').then(({ data, error }) => {
 		books.value.push(new Book(item) as Book);
 	}
 	books.value.sort(sortBooksByDate);
+	syncMissingBookColours(books.value);
 });
 </script>
 <template>
@@ -59,6 +62,14 @@ supabase.from('books').select('*').then(({ data, error }) => {
 				:key="book.getUid() || ''"
 				:book="book"
 				view-mode="card"
+			/>
+		</div>
+		<div v-else-if="viewMode === 'stack'" class="books-stack">
+			<BookContainer
+				v-for="book in books.filter((book: Book) => filterStatus == 'all' || book.getStatus() == filterStatus)"
+				:key="book.getUid() || ''"
+				:book="book"
+				view-mode="stack"
 			/>
 		</div>
 
@@ -106,6 +117,13 @@ supabase.from('books').select('*').then(({ data, error }) => {
 .books-list {
 	display: flex;
 	flex-direction: column;
+}
+
+.books-stack {
+	display: flex;
+	flex-direction: column;
+	gap: 0;
+	padding: 10px 0;
 }
 
 @media (max-width: 768px) {
